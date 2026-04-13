@@ -1,0 +1,122 @@
+:root {
+  --rosa-fuerte: #ff85a1;
+  --rosa-claro: #fbb1bd;
+  --fondo: #fff9fb;
+  --blanco: #ffffff;
+  --texto: #4a4a4a;
+  --gris-suave: #eeeeee;
+}
+
+body {
+  background-color: var(--fondo);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--texto);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.App {
+  width: 100%;
+  max-width: 1000px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+h1 {
+  color: var(--rosa-fuerte);
+  font-size: 3rem;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* 3. Buscador y Formulario */
+.form-container, .search-container {
+  background: var(--blanco);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+input {
+  padding: 12px 15px;
+  margin: 10px 5px;
+  border: 1px solid var(--gris-suave);
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: var(--rosa-fuerte);
+  box-shadow: 0 0 5px var(--rosa-claro);
+}
+
+button {
+  background-color: var(--rosa-fuerte);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: var(--rosa-claro);
+  transform: translateY(-2px);
+}
+
+/* 4. La Lista de Productos (Grid) */
+.makeup-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
+}
+
+/* 5. Tarjetas de Maquillaje */
+.makeup-item {
+  background: var(--blanco);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  border-bottom: 4px solid var(--rosa-fuerte);
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.makeup-item:hover {
+  transform: translateY(-10px);
+}
+
+.makeup-nombre {
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+}
+
+.makeup-precio {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--rosa-fuerte);
+}
+
+.makeup-acciones {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-delete {
+  background-color: #ff4d4d;
+}
+
+.btn-delete:hover {
+  background-color: #ff8080;
+}
