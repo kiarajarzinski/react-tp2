@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
+import { useMakeup } from '../../context/MakeupContext';
 
-function MakeupForm({ onSubmit, makeupEditando, onCancelarEdicion }) {
+
+function MakeupForm({ makeupEditando, onCancelarEdicion }) {
+const {dispatch} = useMakeup();
+
   const [form, setForm] = useState({
     nombre: "",
     marca: "",
@@ -10,7 +14,8 @@ function MakeupForm({ onSubmit, makeupEditando, onCancelarEdicion }) {
   useEffect(() => {
     if (makeupEditando) {
       setForm(makeupEditando); 
-      setForm({ nombre: "", marca: "", precio: "" }); 
+} else {
+      setForm({ nombre: "", marca: "", precio: "" });
     }
   }, [makeupEditando]);
 
@@ -21,8 +26,23 @@ function MakeupForm({ onSubmit, makeupEditando, onCancelarEdicion }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(form);
-    if (!makeupEditando) setForm({ nombre: "", marca: "", precio: "" });
+
+   if (makeupEditando) {
+      
+      dispatch({ 
+        type: "UPDATE_MAKEUP", 
+        payload: form 
+      });
+      onCancelarEdicion(); 
+    } else {
+      
+      dispatch({ 
+        type: "ADD_MAKEUP", 
+        payload:{ ...form, id: Date.now() }
+      });
+    }
+
+    setForm({ nombre: "", marca: "", precio: "" });
   };
 
   return (

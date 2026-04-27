@@ -4,25 +4,22 @@ import SearchBar from './components/SearchBar'
 import MakeupItem from './components/MakeupItem'
 import MakeupForm from './components/MakeupForm'
 import { 
-  getMakeupService, 
-  createMakeupService, 
-  updateMakeupService, 
-  deleteMakeupService 
+  getMakeupService
 } from './services/makeup.service';
-
+import { useMakeup } from '../context/MakeupContext.jsx';
 
 function App() {
-  const [makeup, setMakeup] = useState([])
+  const { state, dispatch } = useMakeup();
+  const [editando, setEditando] = useState(null);
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [search, setSearch] = useState('')
 
   const fetchMakeup = async () => {
     setLoading(true)
-    setError(null)
     try {
       const data = await getMakeupService()
-      setMakeup(Array.isArray(data) ? data : [])
+      dispatch({ type: 'SET_MAKEUPS', payload: Array.isArray(data) ? data : [] })
     } catch (err) {
       setError(err.message || 'Error al cargar los maquillajes')
     } finally {
@@ -34,39 +31,11 @@ function App() {
     fetchMakeup()
   }, [])
 
-  const handleCreate = async (newMakeup) => {
-    try {
-      await createMakeupService(newMakeup)
-      fetchMakeup()
-    } catch (err) {
-      setError('Error al crear maquillaje')
-    }
-  }
 
-  const handleUpdate = async (id, updatedMakeup) => {
-    try {
-      await updateMakeupService(id, updatedMakeup)
-      fetchMakeup()
-      setEditando(null)
-    } catch (err) {
-      setError('Error al actualizar maquillaje')
-    }
-  }
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteMakeupService(id)
-      fetchMakeup()
-    } catch (err) {
-      setError('Error al eliminar maquillaje')
-    }
-  }
-
-  const makeupFiltrado = makeup.filter((m) =>
+  const makeupFiltrado = state.makeups.filter((m) =>
     (m.nombre || '').toLowerCase().includes(search.toLowerCase()),
   )
   
-  const [editando, setEditando] = useState(null);
 
   return (
     
@@ -75,7 +44,7 @@ function App() {
       <h1>Maquillajes</h1>
 
       <MakeupForm 
-        onSubmit={editando ? (datos) => handleUpdate(editando.id, datos) : handleCreate} 
+      
         makeupEditando={editando} 
         onCancelarEdicion={() => setEditando(null)} 
       />
@@ -91,7 +60,6 @@ function App() {
     key={m.id} 
     makeup={m} 
     onEditar={setEditando} 
-    onEliminar={handleDelete} 
   />
   
 ))}

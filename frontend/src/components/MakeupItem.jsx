@@ -1,4 +1,7 @@
-function MakeupItem({ makeup, onEditar, onEliminar }) {
+import { useMakeup } from '../../context/MakeupContext';
+function MakeupItem({ makeup, onEditar}) {
+  const { dispatch } = useMakeup();
+
   return (
     <div className="makeup-item">
       <div className="makeup-info">
@@ -10,11 +13,11 @@ function MakeupItem({ makeup, onEditar, onEliminar }) {
       </div>
 
       <div className="makeup-acciones">
-        <button onClick={() => onEditar(makeup)} className="btn-edit">
+        <button onClick={() => onEditar(makeup)}>
           Editar
         </button>
         
-        <button onClick={() => onEliminar(makeup.id)} className="btn-delete">
+        <button onClick={() => dispatch({ type: 'DELETE_MAKEUP', payload: makeup.id })}>
           Eliminar
         </button>
       </div>
