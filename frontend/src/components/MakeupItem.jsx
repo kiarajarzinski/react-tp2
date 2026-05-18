@@ -1,6 +1,11 @@
 import { useMakeup } from '../../context/MakeupContext';
+import { memo } from 'react';
+
 function MakeupItem({ makeup, onEditar}) {
   const { dispatch } = useMakeup();
+  console.log("Me rendericé:", makeup.nombre);
+
+
 
   return (
     <div className="makeup-item">
@@ -25,4 +30,4 @@ function MakeupItem({ makeup, onEditar}) {
   );
 }
 
-export default MakeupItem;
+export default memo(MakeupItem);

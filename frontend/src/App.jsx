@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import './App.css' 
 import SearchBar from './components/SearchBar'
 import MakeupItem from './components/MakeupItem'
@@ -15,27 +15,30 @@ function App() {
   const [error, setError] = useState(null)
   const [search, setSearch] = useState('')
 
-  const fetchMakeup = async () => {
-    setLoading(true)
-    try {
-      const data = await getMakeupService()
-      dispatch({ type: 'SET_MAKEUPS', payload: Array.isArray(data) ? data : [] })
-    } catch (err) {
-      setError(err.message || 'Error al cargar los maquillajes')
-    } finally {
-      setLoading(false)
-    }
+// useCallback para memoizar la función de fetch, evitando recrearlo en cada renderizado
+const fetchMakeup = useCallback(async () => {
+  setLoading(true)
+  try {
+    const data = await getMakeupService()
+    dispatch({ type: 'SET_MAKEUPS', payload: Array.isArray(data) ? data : [] })
+  } catch (err) {
+    setError(err.message || 'Error al cargar los maquillajes')
+  } finally {
+    setLoading(false)
   }
+}, [dispatch]) 
 
   useEffect(() => {
     fetchMakeup()
-  }, [])
+  }, [fetchMakeup])
 
 
-  const makeupFiltrado = state.makeups.filter((m) =>
-    (m.nombre || '').toLowerCase().includes(search.toLowerCase()),
-  )
-  
+const makeupFiltrado = useMemo(() => {
+  console.log("Filtrando maquillajes..."); 
+  return state.makeups.filter((m) =>
+    (m.nombre || '').toLowerCase().includes(search.toLowerCase())
+  );
+}, [state.makeups, search]); 
 
   return (
     
